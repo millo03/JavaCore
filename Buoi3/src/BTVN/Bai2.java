@@ -1,9 +1,6 @@
 package BTVN;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Bai2 {
     public static void InsertSubject(ArrayList <Subject> subjeccs) {
@@ -33,15 +30,27 @@ public class Bai2 {
         }else System.out.println("Empty List");
     }
     public static void sortByTimeEndASC(ArrayList <Subject> subjects) {
-        Collections.sort(subjects, new Comparator<Subject>() {
-            public int compare(Subject o1, Subject o2) {
-                String s = o1.getLimeEnd().substring(0,2);
-                int i = Integer.parseInt(s);
-                String s1= o2.getLimeEnd().substring(0,2);
-                int i1 = Integer.parseInt(s1);
-                return Integer.compare(i,i1);
-            }
+        subjects.sort((o1, o2) -> {
+            String s = o1.getLimeEnd().substring(0, 2);
+            int i = Integer.parseInt(s);
+            String s1 = o2.getLimeEnd().substring(0, 2);
+            int i1 = Integer.parseInt(s1);
+            return Integer.compare(i, i1);
         });
+    }
+
+    public static void SelectSubjectByTime(ArrayList <Subject> subjects) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Thơi gian bắt đầu: ");
+        String timeStart = sc.nextLine();
+        System.out.print("Thơi gian kết thúc: ");
+        String timeEnd = sc.nextLine();
+        subjects.forEach((o1)->{
+            if (Integer.parseInt(o1.getLimeStart().substring(0, 2)) > Integer.parseInt(timeStart.substring(0, 2)) &&
+                    Integer.parseInt(o1.getLimeEnd().substring(0, 2)) < Integer.parseInt(timeEnd.substring(0, 2)))
+            System.out.print(o1);
+        });
+
     }
 
     public static void main(String[] args) {
@@ -49,14 +58,52 @@ public class Bai2 {
         Subject s = new Subject("Android dwv",12,"14:00","17:00");
         Subject s1 = new Subject("Android dev1",12,"14:00","16:00");
         Subject s2= new Subject("Android dwv2",12,"14:00","15:00");
-        Subject s3 = new Subject("Android dwv3",12,"14:00","13:00");
+        Subject s3 = new Subject("Android dwv3",12,"14:00","18:00");
         subjects.add(s);
         subjects.add(s1);
         subjects.add(s2);
         subjects.add(s3);
 
-        Display(subjects);
-        sortByTimeEndASC(subjects);
-        Display(subjects);
+        // tạo menu
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=================Menu================");
+        System.out.println("1.Thêm 1 tiết học mới");
+        System.out.println("2. Hiển thi ds");
+        System.out.println("3. Sắp xếp môn học");
+        System.out.println("4. Lựa chọn môn học");
+        System.out.println("5. Thoát!");
+        System.out.println("");
+        int choice = 0;
+        System.out.print("Nhap lua chon: ");
+        choice = sc.nextInt();
+        sc.nextLine();
+        while (choice>0 && choice <5 ){
+            switch (choice){
+                case 1:
+                    InsertSubject(subjects);
+                    break;
+                case 2:
+                    Display(subjects);
+                    break;
+                case 3:
+                    sortByTimeEndASC(subjects);
+                    break;
+                case 4:
+                    SelectSubjectByTime(subjects);
+                    break;
+                default:
+                    return;
+            }
+            System.out.println("------------------------------");
+            System.out.print("Nhap lua chon: ");
+            choice= sc.nextInt();
+            sc.nextLine();
+
+        }
+
+//        Display(subjects);
+//        //sortByTimeEndASC(subjects);
+//        SelectSubjectByTime(subjects);
+//        //Display(subjects);
     }
 }
